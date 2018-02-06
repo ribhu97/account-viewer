@@ -267,7 +267,7 @@ export default class SendWidgetController {
         // Check if sending this transaction would make balance go below minimum balance
         let minimumBalance = 2 * BASE_RESERVE + (account.subentry_count) * BASE_RESERVE;
         let nativeBalance = _(account.balances).find(balance => balance.asset_type === 'native').balance;
-        let maxSend = new BigNumber(nativeBalance).minus(minimumBalance);
+        let maxSend = new BigNumber(nativeBalance).minus(minimumBalance).minus(transaction.baseFee);
         if (maxSend.lt(this.amount)) {
           throw new BasicClientError('InsufficientBalanceError', {maxSend});
         }
